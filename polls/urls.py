@@ -15,8 +15,15 @@ from . import views
    path(路由规则)
 '''
 urlpatterns = [
-
+    # 首页 http://ip:port/polls/
     path('', views.index, name='index'),
-    path('index', views.index, name='index')
+    # 首页 问题列表/polls/index/
+    path('index', views.index, name='index'),
+    # 问题详情页 /polls/1/
+    path('<int:question_id>/', views.detail, name='detail'),
+    # 投票结果页 /polls/2/results/
+    path('<int:question_id>/results/', views.results, name='results'),
+    # 去投票，选项计数加一 /polls/5/vote/
+    path('<int:question_id>/vote/', views.vote, name='vote')
 ]
 
