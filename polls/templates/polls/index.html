@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>首页</title>
+</head>
+<body>
+  {% if not question_list %}
+    <p>问题列表为空</p>
+  {% endif %}
+
+  <ul>
+    {% for question in question_list %}
+      <a href="{% url 'polls:detail' question.id %}" style="text-decoration: none;">
+        <li>问题：{{ question.question_text }}   发布时间：{{ question.pub_date }}
+        </li>
+      </a>
+    {% endfor %}
+
+  </ul>
+</body>
+</html>

@@ -14,7 +14,9 @@ from . import views
    path()函数定义的路由最终都会在项目启动时加载
    path(路由规则)
 '''
+app_name = 'polls'
 urlpatterns = [
+
     # 首页 http://ip:port/polls/
     path('', views.index, name='index'),
     # 首页 问题列表/polls/index/
