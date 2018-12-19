@@ -12,7 +12,8 @@
   <ul>
     {% for question in question_list %}
       <a href="{% url 'polls:detail' question.id %}" style="text-decoration: none;">
-        <li>问题：{{ question.question_text }}   发布时间：{{ question.pub_date }}
+        <li>
+          问题：{{ question.question_text }}   发布时间：{{ question.pub_date }}
         </li>
       </a>
     {% endfor %}

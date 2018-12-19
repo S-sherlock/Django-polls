@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from .models import Question, Choice
 from django.template import loader
+from django.urls import reverse
+from django.views import generic
 
 
 
@@ -71,10 +73,51 @@ def results(request, question_id):
     """
     投票结果
     """
-    pass
+    question = get_object_or_404(Question, id=question_id)
+    return render(request, 'polls/results.html', {'question': question})
 
 def vote(request, question_id):
     """
     投票 
     """
-    pass
+    # try:
+    #     question = Question.objects.get(id=question_id)
+    #     # choices = question.choice_set.all()
+    #     choice_id = request.POST['choice']
+    #     selected_choice = question.choice_set.get(id=choice_id)
+    # except Choice.DoesNotExist as e:
+    #     error_message = '问题的投票选项不存在'
+    #     return render(request, 'polls/detail.html', context={
+    #         'question': question,
+    #         'error_message': error_message
+    #     })
+    # else:
+    #     # sql update choice set votes=votes+1 where id = 2
+    #     selected_choice.votes += 1
+    #     selected_choice.save()
+    #     # 投票完成之后重定向到results 函数
+    #     return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+
+    question = get_object_or_404(Question, id=question_id)
+    try:
+        selected_choice = question.choice_set.get(id=request.POST['choice'])
+    except (KeyError, Choice.DoesNotExist):
+        return render(request, 'polls/detail.html', {
+            'question': question,
+            'error_message': '请选择一项投票！！！',
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
+
+
+# 通用模板示例， 跟def index类比着看
+# class SimpleView(generic.ListView):
+#     template_name = 'polls/index.html'
+#     context_object_name = 'question_list'
+#
+#     def get_queryset(self):
+#         return Question.objects.all()
